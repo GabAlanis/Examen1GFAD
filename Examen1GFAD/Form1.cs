@@ -16,5 +16,15 @@ namespace Examen1GFAD
         {
             InitializeComponent();
         }
+
+        private void dtpfin_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void importarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

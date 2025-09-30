@@ -20,12 +20,67 @@ namespace Examen1GFAD
             InitializeComponent();
             columnas = new List<string>();
 
+            txtNombre.Enabled = true;
+            txtNombre.ReadOnly = false;
+
             CbMunicipio.SelectedIndexChanged += CbMunicipio_SelectedIndexChanged;
+            txtNombre.TextChanged += TxtNombre_TextChanged;
+        }
+
+        private void TxtNombre_TextChanged(object sender, EventArgs e)
+        {
+            string nombreFiltro = txtNombre.Text.Trim();
+
+            IEnumerable<object[]> filtradas;
+
+            if (string.IsNullOrWhiteSpace(nombreFiltro))
+            {
+                filtradas = allFilas;
+            }
+            else
+            {
+                filtradas = allFilas.Where(f =>
+                    (f[3]?.ToString() ?? "").IndexOf(nombreFiltro, StringComparison.OrdinalIgnoreCase) >= 0);
+            }
+
+            CargarFilas(filtradas.ToList());
+            TxtAfiliados.Text = filtradas.Count().ToString();
         }
 
         private void CbMunicipio_SelectedIndexChanged(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            if (CbMunicipio.SelectedItem == null)
+                return;
+
+            string municipio = CbMunicipio.SelectedItem.ToString();
+
+            IEnumerable<object[]> filtradas;
+
+            if (municipio == "TODOS")
+            {
+                filtradas = allFilas;
+            }
+            else if (municipio == "NINGUNO")
+            {
+                // los que no tienen municipio
+                filtradas = allFilas.Where(f => string.IsNullOrWhiteSpace(f[2]?.ToString()));
+            }
+            else
+                filtradas = allFilas.Where(f => (f[2]?.ToString() ?? "") == municipio);
+
+            CargarFilas(filtradas.ToList());
+            TxtAfiliados.Text = filtradas.Count().ToString();
+        }
+
+        private void CargarFilas(List<object[]> filtradas)
+        {
+            DgvAfiliados.SuspendLayout();
+            DgvAfiliados.Rows.Clear();
+            foreach (var fila in filtradas)
+            {
+                DgvAfiliados.Rows.Add(fila);
+            }
+            DgvAfiliados.ResumeLayout();
         }
 
         private void dtpfin_ValueChanged(object sender, EventArgs e)
@@ -141,39 +196,50 @@ namespace Examen1GFAD
         {
             this.Close();
         }
-        private void cbMunicipio_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (CbMunicipio.SelectedItem == null)
-                return;
 
-            string municipio = CbMunicipio.SelectedItem.ToString();
+        private void BtnFechas_Click(object sender, EventArgs e)
+
+        {
+            DateTime fechaInicio = DtpInicio.Value.Date;
+            DateTime fechaFin = dtpfin.Value.Date;
+
+            // Validar que la fecha fin no sea menor que la fecha inicio
+            if (fechaFin < fechaInicio)
+            {
+                MessageBox.Show("La fecha fin no puede ser menor que la fecha inicio.");
+                return;
+            }
+
+            string municipioSeleccionado = CbMunicipio.SelectedItem?.ToString();
 
             IEnumerable<object[]> filtradas;
 
-            if (municipio == "TODOS")
+            try
             {
-                filtradas = allFilas;
+                filtradas = allFilas.Where(f =>
+                {
+                    DateTime fecha;
+                    bool fechaValida = DateTime.TryParse(f[4]?.ToString(), out fecha) &&
+                                       fecha.Date >= fechaInicio && fecha.Date <= fechaFin;
+
+                    bool municipioValido = true;
+
+                    // Si hay un municipio seleccionado, filtramos por él
+                    if (!string.IsNullOrEmpty(municipioSeleccionado) && municipioSeleccionado != "Todos")
+                    {
+                        municipioValido = f[2]?.ToString() == municipioSeleccionado;
+                    }
+
+                    return fechaValida && municipioValido;
+                });
             }
-            else if (municipio == "NINGUNO")
+            catch
             {
-                // los que no tienen municipio
-                filtradas = allFilas.Where(f => string.IsNullOrWhiteSpace(f[2]?.ToString()));
+                filtradas = new List<object[]>();
             }
-            else
-                filtradas = allFilas.Where(f => (f[2]?.ToString() ?? "") == municipio);
 
             CargarFilas(filtradas.ToList());
             TxtAfiliados.Text = filtradas.Count().ToString();
-        }
-        private void CargarFilas(List<object[]> filtradas)
-        {
-            DgvAfiliados.SuspendLayout();
-            DgvAfiliados.Rows.Clear();
-            foreach (var fila in filtradas)
-            {
-                DgvAfiliados.Rows.Add(fila);
-            }
-            DgvAfiliados.ResumeLayout();
         }
 
     }

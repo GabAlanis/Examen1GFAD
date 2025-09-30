@@ -101,9 +101,8 @@ namespace Examen1GFAD
         {
             try
             {
-                ExcelPackage.License.SetNonCommercialPersonal("Jose Franscisco Garcia Lopez");
+                ExcelPackage.License.SetNonCommercialPersonal("Gabriel Fernando Alanis Delgado");
 
-                // Lista temporal
                 List<object[]> filas = new List<object[]>();
                 HashSet<string> municipios = new HashSet<string>();
                 string entidaduno = "";
@@ -159,7 +158,7 @@ namespace Examen1GFAD
 
                 allFilas = filas;
 
-                //aqui cargamos el combo box (ya en el primer hilo)
+                //aqui cargamos el combo box 
                 CbMunicipio.Items.Clear();
                 CbMunicipio.Items.Add("TODOS");
                 CbMunicipio.Items.Add("NINGUNO");

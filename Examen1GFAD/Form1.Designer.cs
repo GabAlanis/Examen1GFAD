@@ -1,6 +1,6 @@
 ﻿namespace Examen1GFAD
 {
-    partial class Form1
+    partial class FrmAfiliados
     {
         /// <summary>
         /// Variable del diseñador necesaria.
@@ -109,7 +109,7 @@
             this.opcionesToolStripMenuItem});
             this.MsMenu.Location = new System.Drawing.Point(0, 0);
             this.MsMenu.Name = "MsMenu";
-            this.MsMenu.Size = new System.Drawing.Size(1200, 24);
+            this.MsMenu.Size = new System.Drawing.Size(858, 24);
             this.MsMenu.TabIndex = 1;
             this.MsMenu.Text = "menuStrip1";
             // 
@@ -124,8 +124,9 @@
             // salirToolStripMenuItem
             // 
             this.salirToolStripMenuItem.Name = "salirToolStripMenuItem";
-            this.salirToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
+            this.salirToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.salirToolStripMenuItem.Text = "Salir";
+            this.salirToolStripMenuItem.Click += new System.EventHandler(this.salirToolStripMenuItem_Click);
             // 
             // opcionesToolStripMenuItem
             // 
@@ -250,11 +251,11 @@
             // 
             this.OfdAbrir.FileName = "openFileDialog1";
             // 
-            // Form1
+            // FrmAfiliados
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1200, 675);
+            this.ClientSize = new System.Drawing.Size(858, 589);
             this.Controls.Add(this.dtpfin);
             this.Controls.Add(this.DtpInicio);
             this.Controls.Add(this.TxtAfiliados);
@@ -268,7 +269,7 @@
             this.Controls.Add(this.DgvAfiliados);
             this.Controls.Add(this.MsMenu);
             this.MainMenuStrip = this.MsMenu;
-            this.Name = "Form1";
+            this.Name = "FrmAfiliados";
             this.Text = "Afiliados";
             ((System.ComponentModel.ISupportInitialize)(this.DgvAfiliados)).EndInit();
             this.MsMenu.ResumeLayout(false);
